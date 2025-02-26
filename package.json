@@ -1,0 +1,35 @@
+{
+  "name": "create-auth",
+  "version": "1.0.0",
+  "main": "src/index.ts",
+  "scripts": {
+    "start": "rm -r test; ts-node src/index.ts",
+    "dev": "nodemon src/index.ts",
+    "build": "tsc",
+    "start:dist": "node dist/src/index.js",
+    "lint": "eslint --fix src",
+    "test": "jest",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@inquirer/prompts": "^7.3.2",
+    "@types/fs-extra": "^11.0.4",
+    "@types/node": "^22.13.5",
+    "@typescript-eslint/eslint-plugin": "^8.24.1",
+    "@typescript-eslint/parser": "^8.24.1",
+    "eslint": "^9.21.0",
+    "eslint-config-prettier": "^10.0.1",
+    "eslint-plugin-prettier": "^5.2.3",
+    "prettier": "^3.5.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.3"
+  },
+  "dependencies": {
+    "fs-extra": "^11.3.0",
+    "nodemon": "^3.1.9"
+  }
+}
