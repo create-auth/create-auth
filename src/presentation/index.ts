@@ -7,7 +7,7 @@ import CreateGitHub from "./CreateGitHub";
 import CreateFaceBook from "./CreateFaceBook";
 import appendAuthProvider from "./AppendAuthOnIndex";
 
-class CreataPresentation {
+class CreatePresentation {
     private ProjectName: string;
     constructor(ProjectName: string) {
         this.ProjectName = ProjectName;
@@ -43,4 +43,4 @@ class CreataPresentation {
     }
 };
 
-export default CreataPresentation;
+export default CreatePresentation;

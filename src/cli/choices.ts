@@ -9,7 +9,7 @@ export const authmethod = [
     },
     {
       name: 'GitHub',
-      value: 'gitHub',
+      value: 'github',
     },
     {
       name: 'Facebook',

@@ -2,40 +2,37 @@ import fs from 'fs-extra';
 import path from 'path';
 
 export default function CreateFaceBook(projectDir: string) {
-    fs.writeFileSync(
-        path.join(projectDir, '/index.ts'),
-        `import passport from "passport";
+  fs.writeFileSync(
+    path.join(projectDir, '/index.ts'),
+    `import passport from "passport";
 import express from "express";
-import UserUseCase from '../../../../application/UserUsecase';
 import UserRepository from '../../../../infrastructure/prisma/prismaRepositories/PrismaUserRepository';
 import FaceBookUseCase from './FaceBookUsecase';
 
 const router = express.Router();
 
 const userRepository = new UserRepository();
-const userUsecase = new UserUseCase(userRepository);
-const faceBookUseCase = new FaceBookUseCase(userRepository, userUsecase);
+const faceBookUseCase = new FaceBookUseCase(userRepository);
 
 router.get('/', passport.authenticate('facebook'));
 router.get('/callback', passport.authenticate('facebook', { failureRedirect: process.env.REDIRECT_URL_ON_FAIL!}),faceBookUseCase.FaceBookCallBack);
 
 export default router;`);
 
-    fs.writeFileSync(
-        path.join(projectDir, '/FaceBookUsecase.ts'),
-        `import { NextFunction, Request, Response } from "express";
+  fs.writeFileSync(
+    path.join(projectDir, '/FaceBookUsecase.ts'),
+    `import { NextFunction, Request, Response } from "express";
 import UserRepository from "../../../../infrastructure/prisma/prismaRepositories/PrismaUserRepository";
 import { AuthProvider } from "@prisma/client";
 import APIError from "../../../../application/Errors/APIError";
 import IUser from "../../../../domain/model/IUser";
 import JWTService from "../../../../application/JWTUsecase";
-import UserUseCase from "../../../../application/UserUsecase";
 import dotenv from 'dotenv';
 
 dotenv.config();
 
 class FaceBookUseCase {
-  constructor(private readonly userRepository: UserRepository, private readonly userUsecase: UserUseCase) { }
+  constructor(private readonly userRepository: UserRepository) { }
   FaceBookSignIn = async (profile: any) => {
     const { id, displayName, photos } = profile;
     const photo = photos[0].value;
@@ -61,7 +58,7 @@ class FaceBookUseCase {
       if (!req.user) return res.status(401).json({ message: 'Unauthorized' });
       const user = req.user as IUser;
       const { accessToken, refreshToken } = JWTService.generateTokens(user.id);
-      this.userUsecase.saveRefreshToken(user.id, refreshToken);
+      this.userRepository.saveRefreshToken(user.id, refreshToken);
       JWTService.setTokenCookies(res, accessToken, refreshToken);
       console.log(user, accessToken)
       const { refreshToken: userRefreshToken, password, ...userWithoutRefreshToken } = user;
@@ -73,20 +70,18 @@ class FaceBookUseCase {
 }
 export default FaceBookUseCase;`);
 
-    fs.writeFileSync(
-        path.join(projectDir, '/FaceBookAuth.ts'),
-        `import passport from 'passport';
+  fs.writeFileSync(
+    path.join(projectDir, '/FaceBookAuth.ts'),
+    `import passport from 'passport';
 import { Strategy as  FacebookStrategy} from 'passport-facebook';
 import UserRepository from '../../../../infrastructure/prisma/prismaRepositories/PrismaUserRepository';
-import UserUseCase from '../../../../application/UserUsecase';
 import FaceBookUseCase from './FaceBookUsecase';
 import dotenv from 'dotenv';
 
 dotenv.config();
 
 const userRepository = new UserRepository();
-const userUsecase = new UserUseCase(userRepository);
-const faceBookUseCase = new FaceBookUseCase(userRepository, userUsecase);
+const faceBookUseCase = new FaceBookUseCase(userRepository);
 
 passport.use(
     new FacebookStrategy(

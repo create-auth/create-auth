@@ -2,40 +2,37 @@ import fs from 'fs-extra';
 import path from 'path';
 
 export default function CreateGoogle(projectDir: string) {
-    fs.writeFileSync(
-        path.join(projectDir, '/index.ts'),
-        `import express from 'express';
-
+  fs.writeFileSync(
+    path.join(projectDir, '/index.ts'),
+    `import express from 'express';
 import passport from 'passport';
-import UserUseCase from '../../../../application/UserUsecase';
 import UserRepository from '../../../../infrastructure/prisma/prismaRepositories/PrismaUserRepository';
 import GoogleUseCase from './GoogleUsecase';
+
 const router = express.Router();
 
 const userRepository = new UserRepository();
-const userUsecase = new UserUseCase(userRepository);
-const googleUseCase = new GoogleUseCase(userRepository, userUsecase);
+const googleUseCase = new GoogleUseCase(userRepository);
 
 router.get('/', passport.authenticate('google', { scope: ['profile', 'email'] }));
 router.get('/callback', passport.authenticate('google', { failureRedirect: process.env.REDIRECT_URL_ON_FAIL! }), googleUseCase.GoogleCallBack);
 
 export default router;`);
 
-    fs.writeFileSync(
-        path.join(projectDir, '/GoogleUsecase.ts'),
-        `import { NextFunction, Request, Response } from "express";
+  fs.writeFileSync(
+    path.join(projectDir, '/GoogleUsecase.ts'),
+    `import { NextFunction, Request, Response } from "express";
 import UserRepository from "../../../../infrastructure/prisma/prismaRepositories/PrismaUserRepository";
 import { AuthProvider } from "@prisma/client";
 import APIError from "../../../../application/Errors/APIError";
 import IUser from "../../../../domain/model/IUser";
 import JWTService from "../../../../application/JWTUsecase";
-import UserUseCase from "../../../../application/UserUsecase";
 import dotenv from 'dotenv';
 
 dotenv.config();
 
 class GoogleUseCase {
-  constructor(private readonly userRepository: UserRepository, private readonly userUsecase: UserUseCase) { }
+  constructor(private readonly userRepository: UserRepository) { }
   GoogleSignIn = async (profile: any) => {
     const { id, displayName, emails, photos } = profile;
     const email = emails[0].value;
@@ -80,10 +77,10 @@ class GoogleUseCase {
       if (!req.user) return res.status(401).json({ message: 'Unauthorized' });
       const user = req.user as IUser;
       const { accessToken, refreshToken } = JWTService.generateTokens(user.id);
-      this.userUsecase.saveRefreshToken(user.id, refreshToken);
+      this.userRepository.saveRefreshToken(user.id, refreshToken);
       JWTService.setTokenCookies(res, accessToken, refreshToken);
       const { refreshToken: userRefreshToken, password, ...userWithoutRefreshToken } = user;
-      res.status(200).json({userWithoutRefreshToken, accessToken})/* .redirect(\`\${process.env.REDIRECT_URL_ON_SUCCESS!}google/callback?token=\${accessToken}&user=\${JSON.stringify(userWithoutRefreshToken)}\`); */
+      res.status(200).json({userWithoutRefreshToken, accessToken})
     } catch (error: any) {
       next(error);
     }
@@ -91,20 +88,18 @@ class GoogleUseCase {
 }
 export default GoogleUseCase;`);
 
-    fs.writeFileSync(
-        path.join(projectDir, '/GoogleAuth.ts'),
-        `import passport from 'passport';
+  fs.writeFileSync(
+    path.join(projectDir, '/GoogleAuth.ts'),
+    `import passport from 'passport';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import dotenv from 'dotenv';
 import GoogleUseCase from './GoogleUsecase';
 import UserRepository from "../../../../infrastructure/prisma/prismaRepositories/PrismaUserRepository";
-import UserUseCase from '../../../../application/UserUsecase';
 
 dotenv.config();
 
 const userRepository = new UserRepository();
-const userUsecase = new UserUseCase(userRepository);
-const googleUseCase = new GoogleUseCase(userRepository, userUsecase);
+const googleUseCase = new GoogleUseCase(userRepository);
 
 passport.use(
   new GoogleStrategy(

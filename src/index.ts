@@ -1,7 +1,6 @@
 
 import cliQuestions from "./cli";
-import CreateGinIndex from "./presentation/Create.G.index";
-import CreataPresentation from "./presentation";
+import ChooseFrameworks from "./cli/ChooseFrameworks";
 
 async function main() {
     const { projectName, framework } = await cliQuestions();
@@ -10,15 +9,8 @@ async function main() {
     };
   
     await createProject(projectName, framework, orm, schema, structure); */
-    const creataPresentation =  new CreataPresentation(projectName);
-    creataPresentation.CreateEmail();
-    creataPresentation.CreateGoogle();
-    creataPresentation.CreateGitHub();
-    creataPresentation.CreateFaceBook();
+    ChooseFrameworks(framework, projectName);
     console.log('Project Name:', projectName);
     console.log('Framework:', framework);
-    for (const f of framework) {
-      console.log(f);
-    }
   }
   main();
