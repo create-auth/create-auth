@@ -13,9 +13,11 @@ class CreateApplication {
         mkdirSync(`${this.ProjectName}/src/application/Errors`, { recursive: true });
         CreateApiError(`${this.ProjectName}/src/application/Errors`);
         CreateJWTUsecase(`${this.ProjectName}/src/application`);
+    };
+    CreateEmail = () => {
         CreateUserUsecase(`${this.ProjectName}/src/application`);
         CreateValidationUsecase(`${this.ProjectName}/src/application`);
-    };
+    }
 };
 
 export default CreateApplication;
