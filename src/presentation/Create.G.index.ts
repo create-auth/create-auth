@@ -1,10 +1,56 @@
-import fs from 'fs-extra';
-import path from 'path';
+import fs from "fs-extra";
+import path from "path";
 
-export default function CreateGinIndex(projectDir: string) {
-    fs.writeFileSync(
-        path.join(projectDir, '/index.ts'),
-        `import express, { NextFunction, Request, Response } from 'express';
+export default function CreateGinIndex(
+  projectDir: string,
+  AuthMethod: string[],
+) {
+  let socialImports = "";
+  let socialLinks = "";
+  let isPassport = false;
+  let initializePass = "";
+  if (AuthMethod.includes("google")) {
+    if (!isPassport) {
+      socialImports += `import passport from 'passport';\n`;
+      initializePass =
+        "app.use(passport.initialize());\n\
+  app.use(passport.session());";
+      isPassport = true;
+    }
+    socialImports += `import './api/socialProviders/Google/GoogleAuth';\n`;
+    socialLinks += `<a href="/api/v1/social/google">Google </a>`;
+  }
+
+  if (AuthMethod.includes("github")) {
+    if (!isPassport) {
+      socialImports += `import passport from 'passport';\n`;
+      initializePass =
+        "app.use(passport.initialize());\n\
+  app.use(passport.session());";
+      isPassport = true;
+    }
+    socialImports += `import './api/socialProviders/GitHub/GitHubAuth';\n`;
+    socialLinks += `<a href="/api/v1/social/github">GitHub </a>`;
+  }
+
+  if (AuthMethod.includes("facebook")) {
+    if (!isPassport) {
+      socialImports += `import passport from 'passport';\n`;
+      initializePass =
+        "app.use(passport.initialize());\n\
+  app.use(passport.session());";
+      isPassport = true;
+    }
+    socialImports += `import './api/socialProviders/FaceBook/FaceBookAuth';\n`;
+    socialLinks += `<a href="/api/v1/social/facebook">Facebook </a>`;
+  }
+  if (!isPassport) {
+    socialLinks = "🦄🌈✨👋🌎🌍🌏✨🌈🦄";
+  }
+
+  fs.writeFileSync(
+    path.join(projectDir, "/index.ts"),
+    `import express, { NextFunction, Request, Response } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
@@ -13,11 +59,8 @@ import session from 'express-session';
 import https from 'https';
 import fs from 'fs';
 import path from 'path';
-import passport from 'passport';
 
-import '../presentation/api/Auth/socialProviders/Google/GoogleAuth';
-import '../presentation/api/Auth/socialProviders/GitHub/GitHubAuth';
-import '../presentation/api/Auth/socialProviders/FaceBook/FaceBookAuth';
+${socialImports}
 dotenv.config();
 
 
@@ -37,22 +80,18 @@ function main() {
     })
   );
 
-  app.use(passport.initialize());
-  app.use(passport.session());
+  ${initializePass}
 
   app.get('/', (req, res) => {
-    res.send(\`
-      <a href="/api/v1/social/google">Google</a>
-      <a href="/api/v1/social/github">GitHub</a>
-      <a href="/api/v1/social/facebook">Facebook</a>
-    \`);
+    res.send(\`${socialLinks}\`);
   });
 
   app.use('/api/v1', apiRouter);
 
-  app.use((err: any, req: Request, res: Response, _next: NextFunction) => {
+  app.use((err: any, req: Request, res: Response, next: NextFunction) => {
     const statusCode = err.status || 500;
     res.status(statusCode).json({ error: err.message || 'Internal Server Error' });
+    next();
   });
 
   let sslOptions;
@@ -72,6 +111,6 @@ function main() {
   });
 }
 
-export default main;`
-    );
+export default main;`,
+  );
 }

@@ -1,9 +1,9 @@
-import fs from 'fs-extra';
-import path from 'path';
+import fs from "fs-extra";
+import path from "path";
 
 export default function CreateUserUsecase(projectDir: string) {
   fs.writeFileSync(
-    path.join(projectDir, '/UserUsecase.ts'),
+    path.join(projectDir, "/UserUsecase.ts"),
     `import { AuthProvider } from '@prisma/client';
 import IUser from '../domain/model/IUser';
 import UserRepository from '../domain/repository/userRepository';
@@ -23,7 +23,9 @@ class UserUseCase {
     if (!password) throw new APIError('Password is required.', 400);
     if (!validator.isEmail(email)) throw new APIError('This is not an email.', 400);
     const isUserExist = await this.userRepository.getByEmail(email);
-    if (isUserExist) throw new APIError('This email is already exist.', 409);
+  
+    if (isUserExist && isUserExist.provider === AuthProvider.EMAIL) throw new APIError('This email is already exist.', 409);
+    if (isUserExist) throw new APIError(\`This email is privided by \${isUserExist.provider} .\`, 409);
     if (!validator.isStrongPassword(password)) throw new APIError('Password not strong.', 400);
     const salt = await bcrypt.genSalt(10);
     user.password = await bcrypt.hash(user.password!, salt!);
@@ -45,7 +47,7 @@ class UserUseCase {
     if (!isUserExist.password) throw new APIError('Invalid password', 401);
     const isPasswordValid = await bcrypt.compare(password, isUserExist.password);
     if (!isPasswordValid) throw new APIError('Invalid password', 401);
-    const { password: _, ...userWithoutPassword } = isUserExist;
+    const { password: pass, refreshToken: refresh, ...userWithoutPassword } = isUserExist;
     return userWithoutPassword;
   }
 
@@ -121,5 +123,6 @@ class UserUseCase {
   }
 }
 
-export default UserUseCase;`)
+export default UserUseCase;`
+  );
 }

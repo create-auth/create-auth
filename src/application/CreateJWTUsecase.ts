@@ -1,9 +1,9 @@
-import fs from 'fs-extra';
-import path from 'path';
+import fs from "fs-extra";
+import path from "path";
 
 export default function CreateJWTUsecase(projectDir: string) {
   fs.writeFileSync(
-    path.join(projectDir, '/JWTUsecase.ts'),
+    path.join(projectDir, "/JWTUsecase.ts"),
     `import { Response } from 'express';
 import jwt from 'jsonwebtoken';
 
@@ -32,5 +32,6 @@ class JWTService {
 }
 
 export default JWTService;
-`)
+`,
+  );
 }

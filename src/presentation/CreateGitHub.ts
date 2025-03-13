@@ -1,9 +1,9 @@
-import fs from 'fs-extra';
-import path from 'path';
+import fs from "fs-extra";
+import path from "path";
 
 export default function CreateGitHub(projectDir: string) {
   fs.writeFileSync(
-    path.join(projectDir, '/index.ts'),
+    path.join(projectDir, "/index.ts"),
     `import passport from "passport";
 import express from "express";
 import UserRepository from '../../../../infrastructure/prisma/prismaRepositories/PrismaUserRepository';
@@ -17,10 +17,11 @@ const gitHubUseCase = new GitHubUseCase(userRepository);
 router.get('/', passport.authenticate('github', { scope: [ 'user:email' ] }));
 router.get('/callback', passport.authenticate('github', { failureRedirect: process.env.REDIRECT_URL_ON_FAIL! }),gitHubUseCase.GitHubCallBack);
 
-export default router;`);
+export default router;`,
+  );
 
   fs.writeFileSync(
-    path.join(projectDir, '/GitHubUsecase.ts'),
+    path.join(projectDir, "/GitHubUsecase.ts"),
     `import { NextFunction, Request, Response } from "express";
 import UserRepository from "../../../../infrastructure/prisma/prismaRepositories/PrismaUserRepository";
 import { AuthProvider } from "@prisma/client";
@@ -55,7 +56,6 @@ class GitHubUseCase {
   };
   GitHubCallBack = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      console.log(req.user)      
       if (!req.user) return res.status(401).json({ message: 'Unauthorized' });
       const user = req.user as IUser;
       const { accessToken, refreshToken } = JWTService.generateTokens(user.id);
@@ -68,10 +68,11 @@ class GitHubUseCase {
     }
   }
 }
-export default GitHubUseCase;`);
+export default GitHubUseCase;`,
+  );
 
   fs.writeFileSync(
-    path.join(projectDir, '/GitHubAuth.ts'),
+    path.join(projectDir, "/GitHubAuth.ts"),
     `import passport from 'passport';
 import { Strategy as GitHubStrategy } from 'passport-github2';
 import UserRepository from '../../../../infrastructure/prisma/prismaRepositories/PrismaUserRepository';
@@ -110,5 +111,6 @@ passport.deserializeUser(async (user: any, done) => {
         done(error, null);
     }
 });
-export default passport;`);
+export default passport;`,
+  );
 }

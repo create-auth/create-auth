@@ -1,9 +1,9 @@
-import fs from 'fs-extra';
-import path from 'path';
+import fs from "fs-extra";
+import path from "path";
 
 export default function CreateGoogle(projectDir: string) {
   fs.writeFileSync(
-    path.join(projectDir, '/index.ts'),
+    path.join(projectDir, "/index.ts"),
     `import express from 'express';
 import passport from 'passport';
 import UserRepository from '../../../../infrastructure/prisma/prismaRepositories/PrismaUserRepository';
@@ -17,10 +17,11 @@ const googleUseCase = new GoogleUseCase(userRepository);
 router.get('/', passport.authenticate('google', { scope: ['profile', 'email'] }));
 router.get('/callback', passport.authenticate('google', { failureRedirect: process.env.REDIRECT_URL_ON_FAIL! }), googleUseCase.GoogleCallBack);
 
-export default router;`);
+export default router;`,
+  );
 
   fs.writeFileSync(
-    path.join(projectDir, '/GoogleUsecase.ts'),
+    path.join(projectDir, "/GoogleUsecase.ts"),
     `import { NextFunction, Request, Response } from "express";
 import UserRepository from "../../../../infrastructure/prisma/prismaRepositories/PrismaUserRepository";
 import { AuthProvider } from "@prisma/client";
@@ -86,10 +87,11 @@ class GoogleUseCase {
     }
   }
 }
-export default GoogleUseCase;`);
+export default GoogleUseCase;`,
+  );
 
   fs.writeFileSync(
-    path.join(projectDir, '/GoogleAuth.ts'),
+    path.join(projectDir, "/GoogleAuth.ts"),
     `import passport from 'passport';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import dotenv from 'dotenv';
@@ -129,5 +131,6 @@ passport.deserializeUser(async (user: any, done) => {
     done(error, null);
   }
 });
-export default passport;`);
+export default passport;`,
+  );
 }

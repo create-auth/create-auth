@@ -1,9 +1,9 @@
-import fs from 'fs-extra';
-import path from 'path';
+import fs from "fs-extra";
+import path from "path";
 
 export default function CreateFaceBook(projectDir: string) {
   fs.writeFileSync(
-    path.join(projectDir, '/index.ts'),
+    path.join(projectDir, "/index.ts"),
     `import passport from "passport";
 import express from "express";
 import UserRepository from '../../../../infrastructure/prisma/prismaRepositories/PrismaUserRepository';
@@ -17,10 +17,11 @@ const faceBookUseCase = new FaceBookUseCase(userRepository);
 router.get('/', passport.authenticate('facebook'));
 router.get('/callback', passport.authenticate('facebook', { failureRedirect: process.env.REDIRECT_URL_ON_FAIL!}),faceBookUseCase.FaceBookCallBack);
 
-export default router;`);
+export default router;`,
+  );
 
   fs.writeFileSync(
-    path.join(projectDir, '/FaceBookUsecase.ts'),
+    path.join(projectDir, "/FaceBookUsecase.ts"),
     `import { NextFunction, Request, Response } from "express";
 import UserRepository from "../../../../infrastructure/prisma/prismaRepositories/PrismaUserRepository";
 import { AuthProvider } from "@prisma/client";
@@ -60,7 +61,6 @@ class FaceBookUseCase {
       const { accessToken, refreshToken } = JWTService.generateTokens(user.id);
       this.userRepository.saveRefreshToken(user.id, refreshToken);
       JWTService.setTokenCookies(res, accessToken, refreshToken);
-      console.log(user, accessToken)
       const { refreshToken: userRefreshToken, password, ...userWithoutRefreshToken } = user;
       res.status(200).json({userWithoutRefreshToken, accessToken})
     } catch (error: any) {
@@ -68,10 +68,11 @@ class FaceBookUseCase {
     }
   }
 }
-export default FaceBookUseCase;`);
+export default FaceBookUseCase;`,
+  );
 
   fs.writeFileSync(
-    path.join(projectDir, '/FaceBookAuth.ts'),
+    path.join(projectDir, "/FaceBookAuth.ts"),
     `import passport from 'passport';
 import { Strategy as  FacebookStrategy} from 'passport-facebook';
 import UserRepository from '../../../../infrastructure/prisma/prismaRepositories/PrismaUserRepository';
@@ -111,5 +112,6 @@ passport.deserializeUser(async (user: any, done) => {
         done(error, null);
     }
 });
-export default passport;`);
+export default passport;`,
+  );
 }

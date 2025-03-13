@@ -1,10 +1,10 @@
-import fs from 'fs-extra';
-import path from 'path';
+import fs from "fs-extra";
+import path from "path";
 
 export default function CreatePrismaUserRepository(projectDir: string) {
-    fs.writeFileSync(
-        path.join(projectDir, '/PrismaUserRepository.ts'),
-        `import IUserRepository from '../../../domain/repository/userRepository';
+  fs.writeFileSync(
+    path.join(projectDir, "/PrismaUserRepository.ts"),
+    `import IUserRepository from '../../../domain/repository/userRepository';
 import IUser from '../../../domain/model/IUser';
 import prisma from '../../prisma/PrismaClient';
 import bcrypt from 'bcrypt';
@@ -62,5 +62,6 @@ class PrismaUserRepository implements IUserRepository {
 
 export default PrismaUserRepository;
 
-`)
+`,
+  );
 }

@@ -1,15 +1,15 @@
-import fs from 'fs-extra';
-import path from 'path';
+import fs from "fs-extra";
+import path from "path";
 
 export default function CreateVerify(projectDir: string) {
-    fs.writeFileSync(
-        path.join(projectDir, '/index.ts'),
-        `import express from 'express';
+  fs.writeFileSync(
+    path.join(projectDir, "/index.ts"),
+    `import express from 'express';
 import dotenv from 'dotenv';
 import VerificationController from './Verification';
-import UserUsecase from '../../../../application/UserUsecase';
-import UserRepository from '../../../../infrastructure/prisma/prismaRepositories/PrismaUserRepository';
-import ValidationUseCase from '../../../../application/validationUsecase';
+import UserUsecase from './../../../../application/UserUsecase';
+import UserRepository from './../../../../infrastructure/prisma/prismaRepositories/PrismaUserRepository';
+import ValidationUseCase from './../../../../application/IVerificationStorage/validationUsecase';
 dotenv.config();
 const router = express.Router();
 const userRepository = new UserRepository();
@@ -23,20 +23,20 @@ router.post('/verify-code', verificationController.verifyCode);
 
 
 export default router;
-`
-    );
-    fs.writeFileSync(
-        path.join(projectDir, '/Verification.ts'),
-        `import { NextFunction, Request, Response } from "express";
-import ValidationUseCase from "../../../../application/validationUsecase";
-import UserUseCase from "../../../../application/UserUsecase";
-import JWTUsecase from "../../../../application/JWTUsecase";
+`,
+  );
+  fs.writeFileSync(
+    path.join(projectDir, "/Verification.ts"),
+    `import { NextFunction, Request, Response } from "express";
+import ValidationUseCase from './../../../../application/IVerificationStorage/validationUsecase';
+import UserUseCase from "./../../../../application/UserUsecase";
+import JWTUsecase from "./../../../../application/JWTUsecase";
+
 class VerificationController {
     constructor(private readonly userUseCase: UserUseCase, private readonly validationUseCase: ValidationUseCase) { }
 
     sendCode = async (req: Request, res: Response, next: NextFunction) => {
         try {
-            console.log(req.body);
             const { email } = req.body;
             const IsEmailVerified = await this.userUseCase.getUserByEmail(email);
             if (IsEmailVerified?.verified) return res.status(400).json({ error: 'Email already verified' });
@@ -83,5 +83,6 @@ class VerificationController {
     }
 }
 
-export default VerificationController;`);
+export default VerificationController;`,
+  );
 }

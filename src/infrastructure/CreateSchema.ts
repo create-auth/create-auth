@@ -1,10 +1,17 @@
-import fs from 'fs-extra';
-import path from 'path';
+import fs from "fs-extra";
+import path from "path";
 
-export default function CreateSchema(projectDir: string) {
-    fs.writeFileSync(
-        path.join(projectDir, '/schema.prisma'),
-        `generator client {
+export default function CreateSchema(projectDir: string, AuthMethod: string[]) {
+  const authProviderEnum = AuthMethod.map((method) =>
+    method.toUpperCase(),
+  ).join("\n  ");
+
+  if (!AuthMethod || AuthMethod.length === 0) {
+    AuthMethod = ["EMAIL"];
+  }
+  fs.writeFileSync(
+    path.join(projectDir, "/schema.prisma"),
+    `generator client {
   provider = "prisma-client-js"
 }
 
@@ -13,17 +20,8 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Product {
-  id    String @id
-  name  String
-  price Int
-}
-
 enum AuthProvider {
-  EMAIL
-  GOOGLE
-  GITHUB
-  FACEBOOK
+  ${authProviderEnum}
 }
 
 model User {
@@ -34,7 +32,8 @@ model User {
   photo        String?
   password     String?
   refreshToken String?
-  provider     AuthProvider @default(EMAIL)
+  provider     AuthProvider @default(${AuthMethod[0].toUpperCase()})
   verified      Boolean     @default(false)
-}`)
+}`,
+  );
 }

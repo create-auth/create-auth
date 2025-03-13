@@ -1,10 +1,10 @@
-import fs from 'fs-extra';
-import path from 'path';
+import fs from "fs-extra";
+import path from "path";
 
 export default function CreateuserRepository(projectDir: string) {
-    fs.writeFileSync(
-        path.join(projectDir, '/userRepository.ts'),
-        `import IUser from "../model/IUser";
+  fs.writeFileSync(
+    path.join(projectDir, "/userRepository.ts"),
+    `import IUser from "../model/IUser";
 
 interface IUserRepository {
   create(data: any): Promise<any>;
@@ -19,5 +19,6 @@ interface IUserRepository {
   getByProviderId(id: string): Promise<IUser | null>;
 }
 
-export default IUserRepository;`)
+export default IUserRepository;`,
+  );
 }

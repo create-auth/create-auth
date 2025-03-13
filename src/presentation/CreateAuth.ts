@@ -1,9 +1,9 @@
-import fs from 'fs-extra';
-import path from 'path';
+import fs from "fs-extra";
+import path from "path";
 
 export default function CreateAuthentication(projectDir: string) {
   fs.writeFileSync(
-    path.join(projectDir, '/Authentication.ts'),
+    path.join(projectDir, "/Authentication.ts"),
     `import UserUseCase from '../../../application/UserUsecase';
 import { NextFunction, Request, Response } from 'express';
 import APIError from '../../../application/Errors/APIError';
@@ -60,9 +60,10 @@ class UserAuthentication {
 }
 
 export default UserAuthentication;
-`);
+`,
+  );
   fs.writeFileSync(
-    path.join(projectDir, '/Authorization.ts'),
+    path.join(projectDir, "/Authorization.ts"),
     `import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import APIError from '../../../application/Errors/APIError';
@@ -98,6 +99,31 @@ class AuthorizationController {
 }
 
 export default AuthorizationController;
-`
-  )
+`,
+  );
+  fs.writeFileSync(
+    path.join(projectDir, "/index.ts"),
+    `import express from 'express';
+import UserAuthentication from './Authentication';
+import UserUsecase from '../../../application/UserUsecase';
+import UserRepository from '../../../infrastructure/prisma/prismaRepositories/PrismaUserRepository';
+import verify from './Verify';
+import dotenv from 'dotenv';
+dotenv.config();
+const router = express.Router();
+
+const userRepository = new UserRepository();
+const userUsecase = new UserUsecase(userRepository);
+const userAuthentication = new UserAuthentication(userUsecase); 
+
+router.post('/register', userAuthentication.registerUser);
+router.post('/login', userAuthentication.loginUser);
+router.get('/refresh', userAuthentication.generateNewAccessToken);
+router.post('/logout', userAuthentication.logoutUser);
+
+router.use('/verify', verify);
+
+export default router;
+`,
+  );
 }
