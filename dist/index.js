@@ -17,10 +17,10 @@ const cli_1 = __importDefault(require("./cli"));
 const ChooseAuthMethod_1 = __importDefault(require("./cli/ChooseAuthMethod"));
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
-        const { projectName, framework } = yield (0, cli_1.default)();
-        (0, ChooseAuthMethod_1.default)(framework, projectName);
-        console.log("Project Name:", projectName);
-        console.log("Framework:", framework);
+        const { projectName, method } = yield (0, cli_1.default)();
+        (0, ChooseAuthMethod_1.default)(method, projectName);
+        console.log('Project Name:', projectName);
+        console.log('Selected Methods:', method);
     });
 }
 main();

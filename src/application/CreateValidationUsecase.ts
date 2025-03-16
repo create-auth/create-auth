@@ -1,9 +1,9 @@
-import fs from "fs-extra";
-import path from "path";
+import fs from 'fs-extra';
+import path from 'path';
 
 export default function CreateValidationUsecase(projectDir: string) {
   fs.writeFileSync(
-    path.join(projectDir, "/validationUsecase.ts"),
+    path.join(projectDir, '/validationUsecase.ts'),
     `import { IVerificationSession } from "../../domain/model/IVerificationSession";
 import { IVerificationStorage } from "../../domain/repository/IVerificationStorage ";
 import APIError from "../Errors/APIError";
@@ -120,7 +120,7 @@ class ValidationUseCase {
 export default ValidationUseCase;`,
   );
   fs.writeFileSync(
-    path.join(projectDir, "/StorageFactory.ts"),
+    path.join(projectDir, '/StorageFactory.ts'),
     `import { IVerificationStorage } from "../../domain/repository/IVerificationStorage ";
 import { InMemoryVerificationStorage } from "./InMemoryVerificationStorage";
 import { RedisVerificationStorage } from "./RedisVerificationStorage";
@@ -143,7 +143,7 @@ export class StorageFactory {
   }`,
   );
   fs.writeFileSync(
-    path.join(projectDir, "/RedisVerificationStorage.ts"),
+    path.join(projectDir, '/RedisVerificationStorage.ts'),
     `import Redis from "ioredis";
 import { IVerificationStorage } from "../../domain/repository/IVerificationStorage ";
 import { IVerificationSession } from "../../domain/model/IVerificationSession";
@@ -218,7 +218,7 @@ export class RedisVerificationStorage implements IVerificationStorage {
   }`,
   );
   fs.writeFileSync(
-    path.join(projectDir, "/InMemoryVerificationStorage.ts"),
+    path.join(projectDir, '/InMemoryVerificationStorage.ts'),
     `import { IVerificationSession } from "../../domain/model/IVerificationSession";
 import { IVerificationStorage } from "../../domain/repository/IVerificationStorage ";
 

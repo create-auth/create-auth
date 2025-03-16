@@ -1,9 +1,9 @@
-import fs from "fs-extra";
-import path from "path";
+import fs from 'fs-extra';
+import path from 'path';
 
 export default function CreateUserUsecase(projectDir: string) {
   fs.writeFileSync(
-    path.join(projectDir, "/UserUsecase.ts"),
+    path.join(projectDir, '/UserUsecase.ts'),
     `import { AuthProvider } from '@prisma/client';
 import IUser from '../domain/model/IUser';
 import UserRepository from '../domain/repository/userRepository';
@@ -78,17 +78,20 @@ class UserUseCase {
       throw new APIError('User not found.', 404);
     }
 
-    return user;
+    const { password: pass, refreshToken: refresh, ...userWithoutPassword } = user;
+    return userWithoutPassword;
   }
   async IsEmailExist(email: string): Promise<IUser> {
     const user = await this.userRepository.getByEmail(email);
-    return user || null;
+    const { password: pass, refreshToken: refresh, ...userWithoutPassword } = user;
+    return userWithoutPassword || null;
   }
 
   async getUserById(userId: string): Promise<IUser> {
     const user = await this.userRepository.get(userId);
     if (!user) throw new APIError('User not found', 404);
-    return user;
+    const { password: pass, refreshToken: refresh, ...userWithoutPassword } = user;
+    return userWithoutPassword;
   }
 
   async updateUser(userId: string, user: IUser): Promise<IUser> {
@@ -97,7 +100,8 @@ class UserUseCase {
     const updatedUser = await this.userRepository.update(userId, user);
     if (!updatedUser) throw new APIError('User not updated', 500);
 
-    return updatedUser;
+    const { password: pass, refreshToken: refresh, ...userWithoutPassword } = updatedUser;
+    return userWithoutPassword;
   }
 
   async deleteUser(userId: string): Promise<void> {
@@ -123,6 +127,6 @@ class UserUseCase {
   }
 }
 
-export default UserUseCase;`
+export default UserUseCase;`,
   );
 }

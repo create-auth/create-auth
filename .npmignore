@@ -1,0 +1,14 @@
+# Ignore everything except dist/
+!dist/
+
+# Ignore sensitive and dev files
+.env
+server.cert
+server.key
+node_modules/
+src/
+test/
+*.ts
+*.map
+tsconfig.json
+jest.config.js

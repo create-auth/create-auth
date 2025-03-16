@@ -1,38 +1,38 @@
-import fs from "fs-extra";
-import path from "path";
+import fs from 'fs-extra';
+import path from 'path';
 
 export default function CreateEnv(projectDir: string, AuthMethod: string[]) {
-  let Auth = "";
+  let Auth = '';
 
-  if (AuthMethod.includes("email")) {
+  if (AuthMethod.includes('email')) {
     Auth +=
       'EMAIL_USER="authe795@gmail.com"\n\
 EMAIL_PASSWORD="djjgoaqchjyqzlau"\n\n\
 REDIS_URL=redis://localhost:6379\n\n';
   }
-  if (AuthMethod.includes("google")) {
+  if (AuthMethod.includes('google')) {
     Auth +=
-      "GOOGLE_CLIENT_ID=772485631565-qa1kme52hkenpdm653pjv41nlsrubtnu.apps.googleusercontent.com\n\
+      'GOOGLE_CLIENT_ID=772485631565-qa1kme52hkenpdm653pjv41nlsrubtnu.apps.googleusercontent.com\n\
 GOOGLE_CLIENT_SECRET=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\n\
-GOOGLE_CALLBACK_URL=https://localhost:3443/api/v1/social/google/callback\n\n";
+GOOGLE_CALLBACK_URL=https://localhost:3443/api/v1/social/google/callback\n\n';
   }
 
-  if (AuthMethod.includes("github")) {
+  if (AuthMethod.includes('github')) {
     Auth +=
-      "GITHUB_CLIENT_ID=Ov23li07J8uIriUPWqhj\n\
+      'GITHUB_CLIENT_ID=Ov23li07J8uIriUPWqhj\n\
 GITHUB_CLIENT_SECRET=924a0e75ce670415dce1a198952b7d2a3f726248\n\
-GITHUB_CALLBACK_URL=https://localhost:3443/api/v1/social/github/callback\n\n";
+GITHUB_CALLBACK_URL=https://localhost:3443/api/v1/social/github/callback\n\n';
   }
 
-  if (AuthMethod.includes("facebook")) {
+  if (AuthMethod.includes('facebook')) {
     Auth +=
-      "FACEBOOK_CLIENT_ID=959978976197408\n\
+      'FACEBOOK_CLIENT_ID=959978976197408\n\
 FACEBOOK_CLIENT_SECRET=46354998efe40526ac0293999240e17d\n\
-FACEBOOK_CALLBACK_URL=https://localhost:3443/api/v1/social/facebook/callback";
+FACEBOOK_CALLBACK_URL=https://localhost:3443/api/v1/social/facebook/callback';
   }
 
   fs.writeFileSync(
-    path.join(projectDir, ".env"),
+    path.join(projectDir, '.env'),
     `DATABASE_URL="file:./dev.db"
 PORT=3443
 

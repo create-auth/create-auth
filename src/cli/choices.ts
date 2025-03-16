@@ -1,18 +1,18 @@
 export const authmethod = [
   {
-    name: "Email",
-    value: "email",
+    name: 'Email',
+    value: 'email',
   },
   {
-    name: "Google",
-    value: "google",
+    name: 'Google',
+    value: 'google',
   },
   {
-    name: "GitHub",
-    value: "github",
+    name: 'GitHub',
+    value: 'github',
   },
   {
-    name: "Facebook",
-    value: "facebook",
+    name: 'Facebook',
+    value: 'facebook',
   },
 ];

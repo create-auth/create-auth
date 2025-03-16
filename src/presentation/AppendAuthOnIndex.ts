@@ -1,15 +1,15 @@
-import { readFileSync, writeFileSync, existsSync } from "fs";
-import CreatSocialIndex from "./CreatSocialIndex";
+import { readFileSync, writeFileSync, existsSync } from 'fs';
+import CreatSocialIndex from './CreatSocialIndex';
 
 export default function appendAuthProvider(
   filePath: string,
-  provider: "Google" | "GitHub" | "FaceBook",
+  provider: 'Google' | 'GitHub' | 'FaceBook',
 ) {
   if (!existsSync(filePath)) {
-    CreatSocialIndex(filePath.split("/index.ts")[0]);
+    CreatSocialIndex(filePath.split('/index.ts')[0]);
   }
 
-  let fileContent = readFileSync(filePath, "utf8");
+  let fileContent = readFileSync(filePath, 'utf8');
 
   const importLine = `import ${provider} from './${provider}';`;
   const routeLine = `router.use('/${provider.toLowerCase()}', ${provider});`;
@@ -19,24 +19,24 @@ export default function appendAuthProvider(
   }
 
   const importInsertIndex = fileContent.indexOf(
-    "const router = express.Router();",
+    'const router = express.Router();',
   );
   if (importInsertIndex !== -1) {
     fileContent =
       fileContent.slice(0, importInsertIndex) +
       importLine +
-      "\n" +
+      '\n' +
       fileContent.slice(importInsertIndex);
   }
 
-  const exportIndex = fileContent.indexOf("export default router;");
+  const exportIndex = fileContent.indexOf('export default router;');
   if (exportIndex !== -1) {
     fileContent =
       fileContent.slice(0, exportIndex) +
       routeLine +
-      "\n" +
+      '\n' +
       fileContent.slice(exportIndex);
   }
 
-  writeFileSync(filePath, fileContent, "utf8");
+  writeFileSync(filePath, fileContent, 'utf8');
 }

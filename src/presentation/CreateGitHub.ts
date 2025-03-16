@@ -1,9 +1,9 @@
-import fs from "fs-extra";
-import path from "path";
+import fs from 'fs-extra';
+import path from 'path';
 
 export default function CreateGitHub(projectDir: string) {
   fs.writeFileSync(
-    path.join(projectDir, "/index.ts"),
+    path.join(projectDir, '/index.ts'),
     `import passport from "passport";
 import express from "express";
 import UserRepository from '../../../../infrastructure/prisma/prismaRepositories/PrismaUserRepository';
@@ -21,7 +21,7 @@ export default router;`,
   );
 
   fs.writeFileSync(
-    path.join(projectDir, "/GitHubUsecase.ts"),
+    path.join(projectDir, '/GitHubUsecase.ts'),
     `import { NextFunction, Request, Response } from "express";
 import UserRepository from "../../../../infrastructure/prisma/prismaRepositories/PrismaUserRepository";
 import { AuthProvider } from "@prisma/client";
@@ -62,7 +62,7 @@ class GitHubUseCase {
       this.userRepository.saveRefreshToken(user.id, refreshToken);
       JWTService.setTokenCookies(res, accessToken, refreshToken);
       const { refreshToken: userRefreshToken, password, ...userWithoutRefreshToken } = user;
-      res.json({userWithoutRefreshToken, accessToken})
+      res.status(200).json({ user: userWithoutRefreshToken, accessToken });/* redirect(\`\${process.env.REDIRECT_URL_ON_SUCCESS!}github/callback?token=\${encodeURIComponent(accessToken)}&user=\${encodeURIComponent(JSON.stringify(userWithoutRefreshToken))}\`); */
     } catch (error: any) {
       next(error);
     }
@@ -72,7 +72,7 @@ export default GitHubUseCase;`,
   );
 
   fs.writeFileSync(
-    path.join(projectDir, "/GitHubAuth.ts"),
+    path.join(projectDir, '/GitHubAuth.ts'),
     `import passport from 'passport';
 import { Strategy as GitHubStrategy } from 'passport-github2';
 import UserRepository from '../../../../infrastructure/prisma/prismaRepositories/PrismaUserRepository';

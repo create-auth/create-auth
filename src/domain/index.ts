@@ -1,8 +1,8 @@
-import { mkdirSync } from "fs";
-import CreateIUser from "./CreateIUser";
-import CreateuserRepository from "./CreateuserRepository";
-import CreateIVerificationSession from "./CreateIVerificationSession";
-import CreateIVerificationStorage from "./CreateIVerificationStorage";
+import { mkdirSync } from 'fs';
+import CreateIUser from './CreateIUser';
+import CreateuserRepository from './CreateuserRepository';
+import CreateIVerificationSession from './CreateIVerificationSession';
+import CreateIVerificationStorage from './CreateIVerificationStorage';
 
 class CreateDomain {
   private ProjectName: string;

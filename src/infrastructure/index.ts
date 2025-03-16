@@ -1,7 +1,7 @@
-import { mkdirSync } from "fs";
-import CreatePrismaClient from "./CreatePrismaClient";
-import CreateSchema from "./CreateSchema";
-import CreatePrismaUserRepository from "./CreatePrismaUserRepository";
+import { mkdirSync } from 'fs';
+import CreatePrismaClient from './CreatePrismaClient';
+import CreateSchema from './CreateSchema';
+import CreatePrismaUserRepository from './CreatePrismaUserRepository';
 
 class CreateInfrastructure {
   private ProjectName: string;
@@ -24,7 +24,7 @@ class CreateInfrastructure {
   }
   InitializeSchema = () => {
     if (this.AuthMethod.length === 0) {
-      this.AuthMethod.push("email");
+      this.AuthMethod.push('email');
     }
     CreateSchema(
       `${this.ProjectName}/src/infrastructure/prisma`,
@@ -32,17 +32,17 @@ class CreateInfrastructure {
     );
   };
   CreateEmail = () => {
-    this.AuthMethod.push("email");
+    this.AuthMethod.push('email');
   };
 
   CreateGoogle = () => {
-    this.AuthMethod.push("google");
+    this.AuthMethod.push('google');
   };
   CreateGitHub = () => {
-    this.AuthMethod.push("github");
+    this.AuthMethod.push('github');
   };
   CreateFaceBook = () => {
-    this.AuthMethod.push("facebook");
+    this.AuthMethod.push('facebook');
   };
 }
 

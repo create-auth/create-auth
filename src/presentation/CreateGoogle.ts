@@ -1,9 +1,9 @@
-import fs from "fs-extra";
-import path from "path";
+import fs from 'fs-extra';
+import path from 'path';
 
 export default function CreateGoogle(projectDir: string) {
   fs.writeFileSync(
-    path.join(projectDir, "/index.ts"),
+    path.join(projectDir, '/index.ts'),
     `import express from 'express';
 import passport from 'passport';
 import UserRepository from '../../../../infrastructure/prisma/prismaRepositories/PrismaUserRepository';
@@ -21,7 +21,7 @@ export default router;`,
   );
 
   fs.writeFileSync(
-    path.join(projectDir, "/GoogleUsecase.ts"),
+    path.join(projectDir, '/GoogleUsecase.ts'),
     `import { NextFunction, Request, Response } from "express";
 import UserRepository from "../../../../infrastructure/prisma/prismaRepositories/PrismaUserRepository";
 import { AuthProvider } from "@prisma/client";
@@ -81,7 +81,7 @@ class GoogleUseCase {
       this.userRepository.saveRefreshToken(user.id, refreshToken);
       JWTService.setTokenCookies(res, accessToken, refreshToken);
       const { refreshToken: userRefreshToken, password, ...userWithoutRefreshToken } = user;
-      res.status(200).json({userWithoutRefreshToken, accessToken})
+      res.status(200).json({ user: userWithoutRefreshToken, accessToken });/* redirect(\`\${process.env.REDIRECT_URL_ON_SUCCESS!}google/callback?token=\${encodeURIComponent(accessToken)}&user=\${encodeURIComponent(JSON.stringify(userWithoutRefreshToken))}\`); */
     } catch (error: any) {
       next(error);
     }
@@ -91,7 +91,7 @@ export default GoogleUseCase;`,
   );
 
   fs.writeFileSync(
-    path.join(projectDir, "/GoogleAuth.ts"),
+    path.join(projectDir, '/GoogleAuth.ts'),
     `import passport from 'passport';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import dotenv from 'dotenv';

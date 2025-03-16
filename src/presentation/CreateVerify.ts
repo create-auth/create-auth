@@ -1,9 +1,9 @@
-import fs from "fs-extra";
-import path from "path";
+import fs from 'fs-extra';
+import path from 'path';
 
 export default function CreateVerify(projectDir: string) {
   fs.writeFileSync(
-    path.join(projectDir, "/index.ts"),
+    path.join(projectDir, '/index.ts'),
     `import express from 'express';
 import dotenv from 'dotenv';
 import VerificationController from './Verification';
@@ -26,7 +26,7 @@ export default router;
 `,
   );
   fs.writeFileSync(
-    path.join(projectDir, "/Verification.ts"),
+    path.join(projectDir, '/Verification.ts'),
     `import { NextFunction, Request, Response } from "express";
 import ValidationUseCase from './../../../../application/IVerificationStorage/validationUsecase';
 import UserUseCase from "./../../../../application/UserUsecase";

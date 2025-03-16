@@ -1,16 +1,16 @@
-import fs from "fs-extra";
-import path from "path";
+import fs from 'fs-extra';
+import path from 'path';
 
 export default function CreateSchema(projectDir: string, AuthMethod: string[]) {
   const authProviderEnum = AuthMethod.map((method) =>
     method.toUpperCase(),
-  ).join("\n  ");
+  ).join('\n  ');
 
   if (!AuthMethod || AuthMethod.length === 0) {
-    AuthMethod = ["EMAIL"];
+    AuthMethod = ['EMAIL'];
   }
   fs.writeFileSync(
-    path.join(projectDir, "/schema.prisma"),
+    path.join(projectDir, '/schema.prisma'),
     `generator client {
   provider = "prisma-client-js"
 }

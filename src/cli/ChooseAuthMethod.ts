@@ -1,9 +1,9 @@
-import CreatePresentation from "../presentation";
-import CreateApplication from "../application";
-import CreateDomain from "../domain";
-import CreateInfrastructure from "../infrastructure";
-import CreatePublic from "../public";
-import CreateConfigurations from "../configurations";
+import CreatePresentation from '../presentation';
+import CreateApplication from '../application';
+import CreateDomain from '../domain';
+import CreateInfrastructure from '../infrastructure';
+import CreatePublic from '../public';
+import CreateConfigurations from '../configurations';
 
 export default function ChooseAuthMethod(
   AuthMethod: string[],
@@ -16,24 +16,24 @@ export default function ChooseAuthMethod(
   const createConfigurations = new CreateConfigurations(projectName);
   for (const method of AuthMethod) {
     switch (method) {
-      case "email":
+      case 'email':
         createApplication.CreateEmail();
         createPresentation.CreateEmail();
         createInfrastructure.CreateEmail();
         createConfigurations.CreateEmail();
         createDomain.CreateEmail();
         break;
-      case "google":
+      case 'google':
         createPresentation.CreateGoogle();
         createInfrastructure.CreateGoogle();
         createConfigurations.CreateGoogle();
         break;
-      case "github":
+      case 'github':
         createPresentation.CreateGitHub();
         createInfrastructure.CreateGitHub();
         createConfigurations.CreateGitHub();
         break;
-      case "facebook":
+      case 'facebook':
         createPresentation.CreateFaceBook();
         createInfrastructure.CreateFaceBook();
         createConfigurations.CreateFaceBook();

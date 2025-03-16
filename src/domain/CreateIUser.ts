@@ -1,9 +1,9 @@
-import fs from "fs-extra";
-import path from "path";
+import fs from 'fs-extra';
+import path from 'path';
 
 export default function CreateIUser(projectDir: string) {
   fs.writeFileSync(
-    path.join(projectDir, "/IUser.ts"),
+    path.join(projectDir, '/IUser.ts'),
     `import { AuthProvider } from "@prisma/client";
 interface IUser {
   id: string;

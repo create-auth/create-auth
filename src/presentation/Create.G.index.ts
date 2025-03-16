@@ -1,55 +1,55 @@
-import fs from "fs-extra";
-import path from "path";
+import fs from 'fs-extra';
+import path from 'path';
 
 export default function CreateGinIndex(
   projectDir: string,
   AuthMethod: string[],
 ) {
-  let socialImports = "";
-  let socialLinks = "";
+  let socialImports = '';
+  let socialLinks = '';
   let isPassport = false;
-  let initializePass = "";
-  if (AuthMethod.includes("google")) {
+  let initializePass = '';
+  if (AuthMethod.includes('google')) {
     if (!isPassport) {
       socialImports += `import passport from 'passport';\n`;
       initializePass =
-        "app.use(passport.initialize());\n\
-  app.use(passport.session());";
+        'app.use(passport.initialize());\n\
+  app.use(passport.session());';
       isPassport = true;
     }
     socialImports += `import './api/socialProviders/Google/GoogleAuth';\n`;
     socialLinks += `<a href="/api/v1/social/google">Google </a>`;
   }
 
-  if (AuthMethod.includes("github")) {
+  if (AuthMethod.includes('github')) {
     if (!isPassport) {
       socialImports += `import passport from 'passport';\n`;
       initializePass =
-        "app.use(passport.initialize());\n\
-  app.use(passport.session());";
+        'app.use(passport.initialize());\n\
+  app.use(passport.session());';
       isPassport = true;
     }
     socialImports += `import './api/socialProviders/GitHub/GitHubAuth';\n`;
     socialLinks += `<a href="/api/v1/social/github">GitHub </a>`;
   }
 
-  if (AuthMethod.includes("facebook")) {
+  if (AuthMethod.includes('facebook')) {
     if (!isPassport) {
       socialImports += `import passport from 'passport';\n`;
       initializePass =
-        "app.use(passport.initialize());\n\
-  app.use(passport.session());";
+        'app.use(passport.initialize());\n\
+  app.use(passport.session());';
       isPassport = true;
     }
     socialImports += `import './api/socialProviders/FaceBook/FaceBookAuth';\n`;
     socialLinks += `<a href="/api/v1/social/facebook">Facebook </a>`;
   }
   if (!isPassport) {
-    socialLinks = "🦄🌈✨👋🌎🌍🌏✨🌈🦄";
+    socialLinks = '🦄🌈✨👋🌎🌍🌏✨🌈🦄';
   }
 
   fs.writeFileSync(
-    path.join(projectDir, "/index.ts"),
+    path.join(projectDir, '/index.ts'),
     `import express, { NextFunction, Request, Response } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';

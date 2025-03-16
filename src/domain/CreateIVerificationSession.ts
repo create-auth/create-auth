@@ -1,9 +1,9 @@
-import fs from "fs-extra";
-import path from "path";
+import fs from 'fs-extra';
+import path from 'path';
 
 export default function CreateIVerificationSession(projectDir: string) {
   fs.writeFileSync(
-    path.join(projectDir, "/IVerificationSession.ts"),
+    path.join(projectDir, '/IVerificationSession.ts'),
     `export interface IVerificationSession {
     email: string;
     code: string;

@@ -1,10 +1,13 @@
 {
   "name": "ziad-create-auth",
-  "version": "1.0.1",
-  "main": "src/index.ts",
+  "version": "1.0.0",
+  "main": "dist/index.js",
   "bin": {
     "ziad-create-auth": "./dist/index.js"
   },
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "start": "rm -r test; ts-node src/index.ts",
     "dev": "nodemon src/index.ts",
@@ -19,7 +22,6 @@
   "license": "ISC",
   "description": "",
   "devDependencies": {
-    "@inquirer/prompts": "^7.3.2",
     "@types/cookie-parser": "^1.4.8",
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
@@ -44,6 +46,7 @@
     "typescript": "^5.7.3"
   },
   "dependencies": {
+    "@inquirer/prompts": "^7.3.3",
     "@prisma/client": "^6.5.0",
     "bcrypt": "^5.1.1",
     "cookie-parser": "^1.4.7",

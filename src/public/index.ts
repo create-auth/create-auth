@@ -1,12 +1,12 @@
-import { mkdirSync } from "fs";
-import fs from "fs-extra";
-import path from "path";
+import { mkdirSync } from 'fs';
+import fs from 'fs-extra';
+import path from 'path';
 
 export default function CreatePublic(projectDir: string) {
   mkdirSync(`${projectDir}/public`, { recursive: true });
   mkdirSync(`${projectDir}/public/template`, { recursive: true });
   fs.writeFileSync(
-    path.join(projectDir, "/public/template/emailTemplate.ts"),
+    path.join(projectDir, '/public/template/emailTemplate.ts'),
     `function EmailTemplate(code: string, date: Date) {
     return \`
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 10px;">

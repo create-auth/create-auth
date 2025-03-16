@@ -1,9 +1,9 @@
-import fs from "fs-extra";
-import path from "path";
+import fs from 'fs-extra';
+import path from 'path';
 
 export default function CreateConfig(projectDir: string) {
   fs.writeFileSync(
-    path.join(projectDir, ".eslintrc.json"),
+    path.join(projectDir, '.eslintrc.json'),
     `{
   "root": true,
   "env": {
@@ -40,11 +40,10 @@ export default function CreateConfig(projectDir: string) {
       "typescript": {}
     }
   }
-}
-    `,
+}`,
   );
   fs.writeFileSync(
-    path.join(projectDir, ".prettierrc"),
+    path.join(projectDir, '.prettierrc'),
     `{
   "singleQuote": true,
   "tabWidth": 2,
@@ -54,7 +53,7 @@ export default function CreateConfig(projectDir: string) {
     `,
   );
   fs.writeFileSync(
-    path.join(projectDir, "package.json"),
+    path.join(projectDir, 'package.json'),
     `{
   "name": "auth",
   "version": "1.0.0",
@@ -75,12 +74,12 @@ export default function CreateConfig(projectDir: string) {
   );
 
   fs.writeFileSync(
-    path.join(projectDir, "README.md"),
+    path.join(projectDir, 'README.md'),
     `# Auth
 `,
   );
   fs.writeFileSync(
-    path.join(projectDir, "tsconfig.json"),
+    path.join(projectDir, 'tsconfig.json'),
     `{
   "compilerOptions": {
     "outDir": "dist",
@@ -91,18 +90,30 @@ export default function CreateConfig(projectDir: string) {
     "forceConsistentCasingInFileNames": true,
     "noImplicitAny": true,
     "strict": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "declaration": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    }
   },
   "include": [
     "./*.js",
+    "./*.ts",
     "src/**/*.ts",
     "test/**/*.ts"
   ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
 }
 `,
   );
   fs.writeFileSync(
-    path.join(projectDir, "server.cert"),
+    path.join(projectDir, 'server.cert'),
     `-----BEGIN CERTIFICATE-----
 MIIDbzCCAlegAwIBAgIUDtWghjfJVUBWimVgnQl1T5PtpcYwDQYJKoZIhvcNAQEL
 BQAwRzELMAkGA1UEBhMCVVMxFDASBgNVBAgMC0xvc19hbmdsb3NlMRQwEgYDVQQH
@@ -127,7 +138,7 @@ BT0n4VwFTIU3mhr9aTUHtB2Azw==
 `,
   );
   fs.writeFileSync(
-    path.join(projectDir, "server.key"),
+    path.join(projectDir, 'server.key'),
     `-----BEGIN PRIVATE KEY-----
 MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC6uOZ62B1dDCDi
 t0iXoHOGA6Qqsnapyf7/HsE8qecbGZxlQ5dRmqDtWydeOk72Q9V5tHm20iPyM4bx

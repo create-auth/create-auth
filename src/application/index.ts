@@ -1,8 +1,8 @@
-import { mkdirSync } from "fs";
-import CreateApiError from "./CreateApiError";
-import CreateJWTUsecase from "./CreateJWTUsecase";
-import CreateUserUsecase from "./CreateUserUsecase";
-import CreateValidationUsecase from "./CreateValidationUsecase";
+import { mkdirSync } from 'fs';
+import CreateApiError from './CreateApiError';
+import CreateJWTUsecase from './CreateJWTUsecase';
+import CreateUserUsecase from './CreateUserUsecase';
+import CreateValidationUsecase from './CreateValidationUsecase';
 
 class CreateApplication {
   private ProjectName: string;
