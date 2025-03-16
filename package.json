@@ -1,6 +1,6 @@
 {
   "name": "ziad-create-auth",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "dist/index.js",
   "bin": {
     "ziad-create-auth": "./dist/index.js"
