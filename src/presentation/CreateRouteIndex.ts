@@ -23,6 +23,7 @@ export default function CreateRouteIndex(
   fs.writeFileSync(
     path.join(projectDir, '/index.ts'),
     `import express from 'express';
+import { Request, Response } from "express";
 import AuthorizationController from './Auth/Authorization';
 import UserRepository from '../../infrastructure/prisma/prismaRepositories/PrismaUserRepository';
 import UserUseCase from '../../application/UserUsecase';
@@ -33,11 +34,11 @@ const userRepository = new UserRepository();
 const userUsecase = new UserUseCase(userRepository);
 const authorizationController = new AuthorizationController(userUsecase);
 
-const product = () => {
-return []
-}
+const getProduct = (req: Request, res: Response): void => {
+    res.json(["product1", "product2", "product3"]);
+};
 
-apiRouter.use('/products', authorizationController.AuthToken, product);
+apiRouter.get('/products', authorizationController.AuthToken, getProduct);
 ${Router}
 export default apiRouter;`,
   );
